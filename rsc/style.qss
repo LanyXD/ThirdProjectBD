@@ -1,0 +1,118 @@
+/* =======================
+   Style QSS Elegante - Color Hunt
+   ======================= */
+
+/* -----------------------
+   Ventana Principal
+------------------------ */
+QWidget {
+    background-color: #F2EEE9;   /* fondo neutro */
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 13px;
+    color: #591D07;              /* texto principal */
+}
+
+/* -----------------------
+   Etiquetas
+------------------------ */
+QLabel {
+    color: #591D07;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+QLabel.titulo {
+    font-size: 18px;
+    color: #F28705;  /* naranja para títulos */
+}
+
+/* -----------------------
+   Botones
+------------------------ */
+QPushButton {
+    background-color: #F2C438;  /* amarillo cálido */
+    color: #591D07;              /* texto oscuro */
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-weight: bold;
+    border: 1px solid #F28705;
+}
+
+QPushButton:hover {
+    background-color: #F28705;  /* naranja para hover */
+    border: 1px solid #F2C438;
+}
+
+QPushButton:pressed {
+    background-color: #D4A008;  /* amarillo más oscuro al presionar */
+    border: 1px solid #591D07;
+}
+
+/* -----------------------
+   Campos de Texto
+------------------------ */
+QLineEdit {
+    border: 2px solid #591D07;  /* borde marrón oscuro */
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #F2EEE9;   /* fondo neutro */
+    color: #591D07;
+}
+
+QLineEdit:focus {
+    border: 2px solid #F2C438;  /* resaltar con amarillo */
+    background-color: #FFF9E0;  /* ligero cambio de fondo */
+}
+
+/* -----------------------
+   CheckBox / RadioButton
+------------------------ */
+QCheckBox, QRadioButton {
+    spacing: 5px;
+    color: #591D07;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #F2C438;  /* amarillo para check */
+    border: 1px solid #591D07;
+}
+
+/* -----------------------
+   ScrollBars
+------------------------ */
+QScrollBar:vertical {
+    background: #F2EEE9;
+    width: 12px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #F28705;
+    min-height: 20px;
+    border-radius: 6px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none;
+}
+
+/* -----------------------
+   TabWidget
+------------------------ */
+QTabWidget::pane {
+    border: 1px solid #591D07;
+    border-radius: 6px;
+}
+
+QTabBar::tab {
+    background: #F2C438;
+    color: #591D07;
+    padding: 6px 12px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+QTabBar::tab:selected {
+    background: #F28705;
+    font-weight: bold;
+}
