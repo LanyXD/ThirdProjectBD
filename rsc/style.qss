@@ -116,3 +116,15 @@ QTabBar::tab:selected {
     background: #F28705;
     font-weight: bold;
 }
+/* -----------------------
+   Toolbar
+------------------------ */
+QToolButton {
+    background-color: #F2C438;
+    border: 1px solid #F28705;
+    border-radius: 4px;
+    padding: 5px;
+}
+QToolButton:hover {
+    background-color: #FFD93D;
+}
