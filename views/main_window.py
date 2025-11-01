@@ -1,8 +1,9 @@
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget,
+    QMainWindow, QWidget,
     QStackedLayout, QToolBar, QStatusBar
 )
 from PyQt6.QtGui import QAction, QIcon
+from utils.window_utils import center_on_screen
 
 
 class MainWindow(QMainWindow):
@@ -22,9 +23,9 @@ class MainWindow(QMainWindow):
         self.setup_status_bar()
 
     def setup_window(self):
-        self.setWindowTitle("Ventana Principal")
+        self.setWindowTitle("La Super Tienda")
         self.setFixedSize(1024, 700)
-        self.center_on_screen()
+        center_on_screen(self)
 
     def setup_central_widget(self):
         central_widget = QWidget(self)
@@ -59,13 +60,6 @@ class MainWindow(QMainWindow):
         self.status_bar = QStatusBar()
         self.status_bar.showMessage("Principal")
         self.setStatusBar(self.status_bar)
-
-    def center_on_screen(self):
-        screen = QApplication.primaryScreen()
-        screen_geometry = screen.availableGeometry()
-        window_geometry = self.frameGeometry()
-        window_geometry.moveCenter(screen_geometry.center())
-        self.move(window_geometry.topLeft())
 
     def add_widget(self, widget):
         self.main_layout.addWidget(widget)

@@ -1,6 +1,7 @@
+from utils.window_utils import center_on_screen
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout,
+    QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton)
 
 
@@ -21,7 +22,7 @@ class LoginWindow(QWidget):
     def setup_window(self):
         self.setWindowTitle("Login")
         self.setFixedSize(400, 250)
-        self.center_on_screen()
+        center_on_screen(self)
 
     def setup_central_widget(self):
         main_layout = QVBoxLayout()
@@ -47,10 +48,3 @@ class LoginWindow(QWidget):
         main_layout.addWidget(self.error_text)
 
         self.setLayout(main_layout)
-
-    def center_on_screen(self):
-        screen = QApplication.primaryScreen()
-        screen_geometry = screen.availableGeometry()
-        window_geometry = self.frameGeometry()
-        window_geometry.moveCenter(screen_geometry.center())
-        self.move(window_geometry.topLeft())
