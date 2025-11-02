@@ -9,14 +9,20 @@ class SalesWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.cmb_client = None
+        self.txt_nit = None
+        self.txt_phone = None
+        self.txt_address = None
         self.tbl_products = None
         self.txt_total = None
         self.txt_payment = None
         self.txt_change = None
+
         self.btn_add = None
-        self.btn_save = None
         self.btn_delete = None
         self.btn_clear = None
+
+        self.btn_save = None
+        self.btn_cancel = None
         self.setup_ui()
 
     def setup_ui(self):
@@ -31,12 +37,34 @@ class SalesWidget(QWidget):
 
     def setup_client_section(self):
         box = QGroupBox("Información del Cliente")
-        layout = QFormLayout()
-
         self.cmb_client = QComboBox()
         self.cmb_client.setPlaceholderText("Seleccionar cliente...")
 
-        layout.addRow(QLabel("Cliente:"), self.cmb_client)
+        self.txt_nit = QLineEdit()
+        self.txt_phone = QLineEdit()
+        self.txt_address = QLineEdit()
+
+        for field in (self.txt_nit, self.txt_phone, self.txt_address):
+            field.setReadOnly(True)
+
+        row1 = QHBoxLayout()
+        row1.addWidget(QLabel("NIT:"))
+        row1.addWidget(self.txt_nit)
+        row1.addSpacing(10)
+        row1.addWidget(QLabel("Teléfono:"))
+        row1.addWidget(self.txt_phone)
+
+        row2 = QHBoxLayout()
+        row2.addWidget(QLabel("Dirección:"))
+        row2.addWidget(self.txt_address)
+
+        layout = QVBoxLayout()
+        layout.addWidget(QLabel("Cliente:"))
+        layout.addWidget(self.cmb_client)
+        layout.addSpacing(8)
+        layout.addLayout(row1)
+        layout.addLayout(row2)
+
         box.setLayout(layout)
         return box
 
@@ -97,11 +125,18 @@ class SalesWidget(QWidget):
 
     def setup_footer_buttons(self):
         btn_layout = QHBoxLayout()
+        self.btn_cancel = QPushButton("❌ Cancelar Venta")
+        self.btn_cancel.setFixedHeight(40)
+        self.btn_cancel.setStyleSheet("font-size: 14px; "
+                                      "font-weight: bold;")
+
         self.btn_save = QPushButton("💾 Realizar Venta")
         self.btn_save.setFixedHeight(40)
-        self.btn_save.setStyleSheet("font-size: 14px; font-weight: bold;")
+        self.btn_save.setStyleSheet("font-size: 14px; "
+                                    "font-weight: bold;")
 
         btn_layout.addStretch()
+        btn_layout.addWidget(self.btn_cancel)
         btn_layout.addWidget(self.btn_save)
         btn_layout.addStretch()
         return btn_layout
