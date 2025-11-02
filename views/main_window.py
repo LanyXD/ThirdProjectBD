@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         self.setup_status_bar()
 
     def setup_window(self):
+        self.setWindowIcon(QIcon("rsc/icons/sol.png"))
         self.setWindowTitle("La Super Tienda")
         self.setFixedSize(1024, 700)
         center_on_screen(self)

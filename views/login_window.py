@@ -1,5 +1,6 @@
 from utils.window_utils import center_on_screen
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout,
     QLabel, QLineEdit, QPushButton)
@@ -20,6 +21,7 @@ class LoginWindow(QWidget):
         self.setup_central_widget()
 
     def setup_window(self):
+        self.setWindowIcon(QIcon("rsc/icons/perro.png"))
         self.setWindowTitle("Login")
         self.setFixedSize(400, 250)
         center_on_screen(self)
