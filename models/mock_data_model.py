@@ -26,6 +26,14 @@ class MockDataModel:
             {"_id": 102, "nombre": "Tostada Mediana Amarilla", "unidad": "bolsa(25u)", "precio": 11.00},
             {"_id": 103, "nombre": "Tostada Grande Amarilla", "unidad": "bolsa(25u)", "precio": 13.00},
             {"_id": 104, "nombre": "Tostada Extragrande Amarilla", "unidad": "bolsa(25u)", "precio": 15.00},
+            {"_id": 101, "nombre": "Tortilla de Maíz", "unidad": "1 lb", "precio": 6.00},
+            {"_id": 102, "nombre": "Tostada Mediana Amarilla", "unidad": "bolsa(25u)", "precio": 11.00},
+            {"_id": 103, "nombre": "Tostada Grande Amarilla", "unidad": "bolsa(25u)", "precio": 13.00},
+            {"_id": 104, "nombre": "Tostada Extragrande Amarilla", "unidad": "bolsa(25u)", "precio": 15.00},
+            {"_id": 101, "nombre": "Tortilla de Maíz", "unidad": "1 lb", "precio": 6.00},
+            {"_id": 102, "nombre": "Tostada Mediana Amarilla", "unidad": "bolsa(25u)", "precio": 11.00},
+            {"_id": 103, "nombre": "Tostada Grande Amarilla", "unidad": "bolsa(25u)", "precio": 13.00},
+            {"_id": 104, "nombre": "Tostada Extragrande Amarilla", "unidad": "bolsa(25u)", "precio": 15.00},
         ]
 
         self.sales = [

@@ -6,10 +6,10 @@
    Ventana Principal
 ------------------------ */
 QWidget {
-    background-color: #F2EEE9;   /* fondo neutro */
+    background-color: #F2EEE9;
     font-family: "Segoe UI", Arial, sans-serif;
     font-size: 13px;
-    color: #591D07;              /* texto principal */
+    color: #591D07;
 }
 
 /* -----------------------
@@ -23,15 +23,15 @@ QLabel {
 
 QLabel.titulo {
     font-size: 18px;
-    color: #F28705;  /* naranja para títulos */
+    color: #F28705;
 }
 
 /* -----------------------
    Botones
 ------------------------ */
 QPushButton {
-    background-color: #F2C438;  /* amarillo cálido */
-    color: #591D07;              /* texto oscuro */
+    background-color: #F2C438;
+    color: #591D07;
     border-radius: 6px;
     padding: 6px 12px;
     font-weight: bold;
@@ -39,29 +39,55 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background-color: #F28705;  /* naranja para hover */
+    background-color: #F28705;
     border: 1px solid #F2C438;
 }
 
 QPushButton:pressed {
-    background-color: #D4A008;  /* amarillo más oscuro al presionar */
+    background-color: #D4A008;
     border: 1px solid #591D07;
 }
 
 /* -----------------------
    Campos de Texto
 ------------------------ */
-QLineEdit {
-    border: 2px solid #591D07;  /* borde marrón oscuro */
+QLineEdit, QPlainTextEdit, QTextEdit {
+    border: 2px solid #591D07;
     border-radius: 4px;
     padding: 4px;
-    background-color: #F2EEE9;   /* fondo neutro */
+    background-color: #F2EEE9;
     color: #591D07;
 }
 
-QLineEdit:focus {
-    border: 2px solid #F2C438;  /* resaltar con amarillo */
-    background-color: #FFF9E0;  /* ligero cambio de fondo */
+QLineEdit:focus, QPlainTextEdit:focus, QTextEdit:focus {
+    border: 2px solid #F2C438;
+    background-color: #FFF9E0;
+}
+
+/* -----------------------
+   ComboBox
+------------------------ */
+QComboBox {
+    background-color: #FFF9E0;
+    color: #591D07;
+    border: 2px solid #591D07;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QComboBox:hover {
+    border: 2px solid #F28705;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #F2EEE9;
+    border: 1px solid #591D07;
+    selection-background-color: #F28705;
+    selection-color: white;
 }
 
 /* -----------------------
@@ -73,7 +99,31 @@ QCheckBox, QRadioButton {
 }
 
 QCheckBox::indicator:checked, QRadioButton::indicator:checked {
-    background-color: #F2C438;  /* amarillo para check */
+    background-color: #F2C438;
+    border: 1px solid #591D07;
+}
+
+/* -----------------------
+   Tablas
+------------------------ */
+QTableWidget, QTableView {
+    gridline-color: #591D07;
+    background-color: #FFF9E0;
+    alternate-background-color: #F2EEE9;
+    border: 1px solid #591D07;
+    border-radius: 4px;
+}
+
+QHeaderView::section {
+    background-color: #F2C438;
+    color: #591D07;
+    border: 1px solid #591D07;
+    padding: 4px;
+    font-weight: bold;
+}
+
+QTableCornerButton::section {
+    background-color: #F28705;
     border: 1px solid #591D07;
 }
 
@@ -83,7 +133,6 @@ QCheckBox::indicator:checked, QRadioButton::indicator:checked {
 QScrollBar:vertical {
     background: #F2EEE9;
     width: 12px;
-    margin: 0px 0px 0px 0px;
 }
 
 QScrollBar::handle:vertical {
@@ -110,21 +159,30 @@ QTabBar::tab {
     padding: 6px 12px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    border: 1px solid #591D07;
 }
 
 QTabBar::tab:selected {
     background: #F28705;
     font-weight: bold;
 }
+
 /* -----------------------
    Toolbar
 ------------------------ */
+QToolBar {
+    background-color: #F2EEE9;
+    border-bottom: 2px solid #591D07; /* separación visual clara */
+    padding: 3px;
+}
+
 QToolButton {
     background-color: #F2C438;
     border: 1px solid #F28705;
     border-radius: 4px;
     padding: 5px;
 }
+
 QToolButton:hover {
     background-color: #FFD93D;
 }
