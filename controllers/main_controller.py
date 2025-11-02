@@ -4,6 +4,7 @@ from views.main_window import MainWindow
 from views.sales_widget import SalesWidget
 from views.inventory_widget import InventoryWidget
 from views.purchase_widget import PurchaseWidget
+from views.sales_history_widget import SalesHistoryWidget
 # controllers
 from controllers.sales_controller import SalesController
 
@@ -15,6 +16,7 @@ class MainController:
         self.sales_widget = SalesWidget()
         self.inventory_widget = InventoryWidget()
         self.purchase_widget = PurchaseWidget()
+        self.sales_history_widget = SalesHistoryWidget()
 
         self.sales_controller = SalesController(self.sales_widget)
 
@@ -22,10 +24,12 @@ class MainController:
         self.view.add_widget(self.sales_widget)
         self.view.add_widget(self.inventory_widget)
         self.view.add_widget(self.purchase_widget)
+        self.view.add_widget(self.sales_history_widget)
 
         self.view.sales.triggered.connect(lambda: self.page_sales())
         self.view.inventory.triggered.connect(lambda: self.page_inventory())
         self.view.purchase.triggered.connect(lambda: self.page_purchase())
+        self.view.sales_history.triggered.connect(lambda: self.page_sales_history())
 
         self.sales_widget.btn_cancel.clicked.connect(self.page_principal)
 
@@ -40,3 +44,6 @@ class MainController:
 
     def page_purchase(self):
         self.view.set_index(3)
+
+    def page_sales_history(self):
+        self.view.set_index(4)

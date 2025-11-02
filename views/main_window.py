@@ -12,6 +12,7 @@ class MainWindow(QMainWindow):
         self.sales = None
         self.inventory = None
         self.purchase = None
+        self.sales_history = None
         self.status_bar = None
         self.main_layout = None
         self.setup_ui()
@@ -50,10 +51,14 @@ class MainWindow(QMainWindow):
         self.purchase = QAction(self)
         self.purchase.setText("Compras")
         self.purchase.setStatusTip("Realizar compra")
+        self.sales_history = QAction(self)
+        self.sales_history.setText("Historial")
+        self.sales_history.setStatusTip("Consultar ventas realizadas")
 
         toolbar.addAction(self.sales)
         toolbar.addAction(self.inventory)
         toolbar.addAction(self.purchase)
+        toolbar.addAction(self.sales_history)
         toolbar.setMovable(False)
 
     def setup_status_bar(self):
