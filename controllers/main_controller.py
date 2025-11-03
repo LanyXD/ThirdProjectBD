@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QLabel
 from views.main_window import MainWindow
 # views
+from views.pages.home_widget import HomeWidget
 from views.pages.sales_widget import SalesWidget
 from views.pages.inventory_widget import InventoryWidget
 from views.pages.purchase_widget import PurchaseWidget
@@ -13,6 +14,7 @@ class MainController:
     def __init__(self):
         self.view = MainWindow()
 
+        self.home_widget = HomeWidget()
         self.sales_widget = SalesWidget()
         self.inventory_widget = InventoryWidget()
         self.purchase_widget = PurchaseWidget()
@@ -20,7 +22,7 @@ class MainController:
 
         self.sales_controller = SalesController(self.sales_widget)
 
-        self.view.add_widget(QLabel("Principal"))
+        self.view.add_widget(self.home_widget)
         self.view.add_widget(self.sales_widget)
         self.view.add_widget(self.inventory_widget)
         self.view.add_widget(self.purchase_widget)
