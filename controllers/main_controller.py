@@ -1,10 +1,10 @@
 from PyQt6.QtWidgets import QLabel
 from views.main_window import MainWindow
 # views
-from views.sales_widget import SalesWidget
-from views.inventory_widget import InventoryWidget
-from views.purchase_widget import PurchaseWidget
-from views.sales_history_widget import SalesHistoryWidget
+from views.pages.sales_widget import SalesWidget
+from views.pages.inventory_widget import InventoryWidget
+from views.pages.purchase_widget import PurchaseWidget
+from views.pages.sales_history_widget import SalesHistoryWidget
 # controllers
 from controllers.sales_controller import SalesController
 
