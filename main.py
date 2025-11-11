@@ -1,6 +1,5 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-
 from controllers.login_controller import LoginController
 
 

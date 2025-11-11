@@ -1,13 +1,14 @@
-from PyQt6.QtWidgets import QLabel
 from views.main_window import MainWindow
 # views
 from views.pages.home_widget import HomeWidget
-from views.pages.sales_widget import SalesWidget
-from views.pages.inventory_widget import InventoryWidget
-from views.pages.purchase_widget import PurchaseWidget
-from views.pages.sales_history_widget import SalesHistoryWidget
+from views.pages.sales.new_sale_widget import NewSaleWidget
+from views.pages.sales.sales_history_widget import SalesHistoryWidget
+from views.pages.inventory.inventory_widget import InventoryWidget
+from views.pages.inventory.stock_history_widget import StockHistoryWidget
+from views.pages.inventory.product_management import ProductManagement
+
 # controllers
-from controllers.sales_controller import SalesController
+from controllers.sales.new_sale_controller import NewSalesController
 
 
 class MainController:
@@ -15,37 +16,43 @@ class MainController:
         self.view = MainWindow()
 
         self.home_widget = HomeWidget()
-        self.sales_widget = SalesWidget()
-        self.inventory_widget = InventoryWidget()
-        self.purchase_widget = PurchaseWidget()
+        self.new_sale_widget = NewSaleWidget()
         self.sales_history_widget = SalesHistoryWidget()
+        self.inventory_widget = InventoryWidget()
+        self.stock_history_widget = StockHistoryWidget()
+        self.product_management_widget = ProductManagement()
 
-        self.sales_controller = SalesController(self.sales_widget)
+        self.new_sale_controller = NewSalesController(self.new_sale_widget)
 
         self.view.add_widget(self.home_widget)
-        self.view.add_widget(self.sales_widget)
-        self.view.add_widget(self.inventory_widget)
-        self.view.add_widget(self.purchase_widget)
+        self.view.add_widget(self.new_sale_widget)
         self.view.add_widget(self.sales_history_widget)
+        self.view.add_widget(self.inventory_widget)
+        self.view.add_widget(self.stock_history_widget)
+        self.view.add_widget(self.product_management_widget)
 
-        self.view.sales.triggered.connect(lambda: self.page_sales())
-        self.view.inventory.triggered.connect(lambda: self.page_inventory())
-        self.view.purchase.triggered.connect(lambda: self.page_purchase())
+        self.view.sales.triggered.connect(lambda: self.page_new_sale())
         self.view.sales_history.triggered.connect(lambda: self.page_sales_history())
+        self.view.inventory.triggered.connect(lambda: self.page_inventory())
+        self.view.stock_history.triggered.connect(lambda: self.page_stock_history())
+        self.view.product_management.triggered.connect(lambda: self.page_product_management())
 
-        self.sales_widget.btn_cancel.clicked.connect(self.page_principal)
+        self.new_sale_widget.btn_cancel.clicked.connect(self.page_principal)
 
     def page_principal(self):
         self.view.set_index(0)
 
-    def page_sales(self):
+    def page_new_sale(self):
         self.view.set_index(1)
 
-    def page_inventory(self):
+    def page_sales_history(self):
         self.view.set_index(2)
 
-    def page_purchase(self):
+    def page_inventory(self):
         self.view.set_index(3)
 
-    def page_sales_history(self):
+    def page_stock_history(self):
         self.view.set_index(4)
+
+    def page_product_management(self):
+        self.view.set_index(5)

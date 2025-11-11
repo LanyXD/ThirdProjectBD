@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import (
-    QMainWindow, QWidget,
-    QStackedLayout, QToolBar, QStatusBar
+    QMainWindow, QWidget, QStackedLayout, QMenuBar, QStatusBar
 )
 from PyQt6.QtGui import QAction, QIcon
 from utils.window_utils import center_on_screen
@@ -10,9 +9,12 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.sales = None
-        self.inventory = None
-        self.purchase = None
         self.sales_history = None
+
+        self.inventory = None
+        self.stock_history = None
+        self.product_management = None
+
         self.status_bar = None
         self.main_layout = None
         self.setup_ui()
@@ -20,7 +22,7 @@ class MainWindow(QMainWindow):
     def setup_ui(self):
         self.setup_window()
         self.setup_central_widget()
-        self.setup_toolbar()
+        self.setup_menu_bar()
         self.setup_status_bar()
 
     def setup_window(self):
@@ -32,35 +34,42 @@ class MainWindow(QMainWindow):
     def setup_central_widget(self):
         central_widget = QWidget(self)
         self.main_layout = QStackedLayout()
-
-        # Page 0
-        self.main_layout.setCurrentIndex(0)
-
         central_widget.setLayout(self.main_layout)
         self.setCentralWidget(central_widget)
 
-    def setup_toolbar(self):
-        toolbar = QToolBar()
-        self.addToolBar(toolbar)
+    def setup_menu_bar(self):
+        menu_bar = QMenuBar(self)
+        self.setMenuBar(menu_bar)
 
-        self.sales = QAction(self)
-        self.sales.setText("Ventas")
-        self.sales.setStatusTip("Realizar venta")
-        self.inventory = QAction(self)
-        self.inventory.setText("Inventario")
-        self.inventory.setStatusTip("Vizualizar inventario")
-        self.purchase = QAction(self)
-        self.purchase.setText("Compras")
-        self.purchase.setStatusTip("Realizar compra")
-        self.sales_history = QAction(self)
-        self.sales_history.setText("Historial")
+        # --- Menú Ventas ---
+        sales_menu = menu_bar.addMenu("Ventas")
+        self.sales = QAction("Nueva venta", self)
+        self.sales.setStatusTip("Realizar una nueva venta")
+        sales_menu.addAction(self.sales)
+
+        self.sales_history = QAction("Historial de ventas", self)
         self.sales_history.setStatusTip("Consultar ventas realizadas")
+        sales_menu.addAction(self.sales_history)
 
-        toolbar.addAction(self.sales)
-        toolbar.addAction(self.inventory)
-        toolbar.addAction(self.purchase)
-        toolbar.addAction(self.sales_history)
-        toolbar.setMovable(False)
+        # --- Menú Inventario ---
+        inventory_menu = menu_bar.addMenu("Inventario")
+        self.inventory = QAction("Ver inventario", self)
+        self.inventory.setStatusTip("Visualizar inventario actual")
+        inventory_menu.addAction(self.inventory)
+
+        self.stock_history = QAction("Ver movimientos", self)
+        self.stock_history.setStatusTip("Visualizar ingresos y egresos de producto")
+        inventory_menu.addAction(self.stock_history)
+
+        self.product_management = QAction("Gestion de productos", self)
+        self.product_management.setStatusTip("Agregar o eliminar un producto")
+        inventory_menu.addAction(self.product_management)
+
+        # --- Menú Ayuda o Sistema ---
+        system_menu = menu_bar.addMenu("Sistema")
+        exit_action = QAction("Salir", self)
+        exit_action.triggered.connect(self.close)
+        system_menu.addAction(exit_action)
 
     def setup_status_bar(self):
         self.status_bar = QStatusBar()

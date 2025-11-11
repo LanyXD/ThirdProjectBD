@@ -2,7 +2,7 @@ from models.mock_data_model import MockDataModel
 from PyQt6.QtWidgets import QTableWidgetItem
 
 
-class SalesController:
+class NewSalesController:
     def __init__(self, view):
         self.view = view
         self.model = MockDataModel()
