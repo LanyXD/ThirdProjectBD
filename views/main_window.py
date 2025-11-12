@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         inventory_menu.addAction(self.product_management)
 
         # --- Menú Ayuda o Sistema ---
-        system_menu = menu_bar.addMenu("Sistema")
+        system_menu = menu_bar.addMenu("Ayuda")
         exit_action = QAction("Salir", self)
         exit_action.triggered.connect(self.close)
         system_menu.addAction(exit_action)
