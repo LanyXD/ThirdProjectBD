@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QGroupBox, QHBoxLayout, QTableWidget,
-    QHeaderView, QLabel, QLineEdit, QPushButton, QFormLayout, QSizePolicy
+    QHeaderView, QLabel, QLineEdit, QPushButton, QFormLayout, QSizePolicy, QCheckBox, QStyle
 )
 
 
@@ -9,10 +9,14 @@ class InventoryWidget(QWidget):
         super().__init__()
         self.tbl_inventory = None
         self.txt_search = None
-        self.btn_add = None
-        self.btn_edit = None
-        self.btn_delete = None
-        self.btn_clear = None
+
+        self.chk_all = None
+        self.chk_stock_low = None
+        self.chk_barbecue = None
+
+        self.btn_input = None
+        self.btn_output = None
+        self.btn_update = None
         self.setup_ui()
 
     def setup_ui(self):
@@ -25,13 +29,26 @@ class InventoryWidget(QWidget):
         self.setLayout(main_layout)
 
     def setup_search_section(self):
-        box = QGroupBox("Buscar Producto")
+        box = QGroupBox("Buscar y Filtrar Producto")
         layout = QFormLayout()
 
         self.txt_search = QLineEdit()
         self.txt_search.setPlaceholderText("Ingrese nombre o código...")
 
+        # Checkboxes de filtro
+        filter_layout = QHBoxLayout()
+        self.chk_all = QCheckBox("Todos")
+        self.chk_stock_low = QCheckBox("Stock Bajo")
+        self.chk_barbecue = QCheckBox("Barbacoa")
+
+        filter_layout.addWidget(self.chk_all)
+        filter_layout.addWidget(self.chk_stock_low)
+        filter_layout.addWidget(self.chk_barbecue)
+        filter_layout.addStretch()
+
         layout.addRow(QLabel("Búsqueda:"), self.txt_search)
+        layout.addRow(QLabel("Filtros:"), filter_layout)
+
         box.setLayout(layout)
         return box
 
@@ -42,7 +59,7 @@ class InventoryWidget(QWidget):
         self.tbl_inventory = QTableWidget()
         self.tbl_inventory.setColumnCount(5)
         self.tbl_inventory.setHorizontalHeaderLabels(
-            ["Código", "Producto", "Precio (Q)", "Stock", "Unidad"]
+            ["Código", "Producto", "Color", "Existencia", "Precio (Q)"]
         )
 
         header = self.tbl_inventory.horizontalHeader()
@@ -58,14 +75,12 @@ class InventoryWidget(QWidget):
     def setup_footer_buttons(self):
         btn_layout = QHBoxLayout()
 
-        self.btn_add = QPushButton("➕ Agregar")
-        self.btn_edit = QPushButton("✏️ Editar")
-        self.btn_delete = QPushButton("🗑️ Eliminar")
-        self.btn_clear = QPushButton("🧹 Limpiar")
+        self.btn_input = QPushButton("➕ Ingreso")
+        self.btn_output = QPushButton("➖ Salida")
+        self.btn_update = QPushButton("✏️ Actualizar")
 
-        btn_layout.addWidget(self.btn_add)
-        btn_layout.addWidget(self.btn_edit)
-        btn_layout.addWidget(self.btn_delete)
-        btn_layout.addWidget(self.btn_clear)
+        btn_layout.addWidget(self.btn_input)
+        btn_layout.addWidget(self.btn_output)
+        btn_layout.addWidget(self.btn_update)
 
         return btn_layout
