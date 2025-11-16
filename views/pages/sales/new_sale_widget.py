@@ -50,20 +50,16 @@ class NewSaleWidget(QWidget):
         row1 = QHBoxLayout()
         row1.addWidget(QLabel("NIT:"))
         row1.addWidget(self.txt_nit)
-        row1.addSpacing(10)
         row1.addWidget(QLabel("Teléfono:"))
         row1.addWidget(self.txt_phone)
-
-        row2 = QHBoxLayout()
-        row2.addWidget(QLabel("Dirección:"))
-        row2.addWidget(self.txt_address)
+        row1.addWidget(QLabel("Dirección:"))
+        row1.addWidget(self.txt_address)
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Cliente:"))
         layout.addWidget(self.cmb_client)
         layout.addSpacing(8)
         layout.addLayout(row1)
-        layout.addLayout(row2)
 
         box.setLayout(layout)
         return box
@@ -105,22 +101,32 @@ class NewSaleWidget(QWidget):
 
     def setup_totals_section(self):
         box = QGroupBox("Totales")
-        layout = QFormLayout()
+        layout = QHBoxLayout()
 
         self.txt_total = QLineEdit("0.00")
         self.txt_total.setReadOnly(True)
+        total_box = QVBoxLayout()
+        total_box.addWidget(QLabel("Total:"))
+        total_box.addWidget(self.txt_total)
 
         self.txt_payment = QLineEdit()
         self.txt_payment.setPlaceholderText("Pago del cliente")
+        payment_box = QVBoxLayout()
+        payment_box.addWidget(QLabel("Pago:"))
+        payment_box.addWidget(self.txt_payment)
 
         self.txt_change = QLineEdit("0.00")
         self.txt_change.setReadOnly(True)
+        change_box = QVBoxLayout()
+        change_box.addWidget(QLabel("Cambio:"))
+        change_box.addWidget(self.txt_change)
 
-        layout.addRow(QLabel("Total:"), self.txt_total)
-        layout.addRow(QLabel("Pago:"), self.txt_payment)
-        layout.addRow(QLabel("Cambio:"), self.txt_change)
+        layout.addLayout(total_box)
+        layout.addLayout(payment_box)
+        layout.addLayout(change_box)
 
         box.setLayout(layout)
+
         return box
 
     def setup_footer_buttons(self):
