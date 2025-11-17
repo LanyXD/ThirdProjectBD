@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6.QtWidgets import QTableWidgetItem, QInputDialog, QMessageBox
 from models.inventory_model import InventoryModel
 
 
@@ -70,7 +70,59 @@ class InventoryController:
         return QTableWidgetItem(text)
 
     def input_stock(self):
-        pass
+        row = self.view.tbl_inventory.currentRow()
+        if row < 0:
+            self.show_message("Selecciona un producto primero.")
+            return
+
+        code = self.view.tbl_inventory.item(row, 0).text()
+        item = self.model.get_by_code(code)
+        if not item:
+            self.show_message("Producto no encontrado.")
+            return
+
+        amount, ok = QInputDialog.getInt(
+            self.view, "Ingreso de stock", f"Ingrese cantidad a agregar para {item['name']}:"
+        )
+        if ok and amount > 0:
+            new_stock = item.get("stock", 0) + amount
+            self.model.update_item(str(item["_id"]), {"stock": new_stock})
+            self.refresh_table()
 
     def output_stock(self):
-        pass
+        row = self.view.tbl_inventory.currentRow()
+        if row < 0:
+            self.show_message("Selecciona un producto primero.")
+            return
+
+        code = self.view.tbl_inventory.item(row, 0).text()
+        item = self.model.get_by_code(code)
+        if not item:
+            self.show_message("Producto no encontrado.")
+            return
+
+        amount, ok = QInputDialog.getInt(
+            self.view, "Salida de stock", f"Ingrese cantidad a retirar para {item['name']}:"
+        )
+
+        if not ok:
+            return
+
+        if amount <= 0:
+            self.show_message("La cantidad debe ser mayor a 0.")
+            return
+
+        current_stock = item.get("stock", 0)
+
+        if amount > current_stock:
+            self.show_message(
+                f"No puedes retirar {amount}. Solo hay {current_stock} en existencia."
+            )
+            return
+
+        nuevo_stock = current_stock - amount
+        self.model.update_item(str(item["_id"]), {"stock": nuevo_stock})
+        self.refresh_table()
+
+    def show_message(self, text):
+        QMessageBox.information(self.view, "Inventario", text)

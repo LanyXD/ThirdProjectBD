@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QGroupBox, QHBoxLayout, QTableWidget,
-    QHeaderView, QLabel, QLineEdit, QPushButton, QFormLayout, QSizePolicy, QCheckBox, QStyle
+    QHeaderView, QLabel, QLineEdit, QPushButton, QFormLayout, QSizePolicy, QCheckBox, QStyle, QAbstractItemView
 )
 
 
@@ -64,6 +64,9 @@ class InventoryWidget(QWidget):
 
         header = self.tbl_inventory.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.tbl_inventory.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tbl_inventory.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.tbl_inventory.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.tbl_inventory.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )

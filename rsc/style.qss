@@ -127,6 +127,12 @@ QTableWidget, QTableView {
     border-radius: 4px;
 }
 
+QTableWidget::item:selected {
+    background-color: #FFF2B2; /* amarillo muy suave */
+    color: #333;
+    border: 1px solid #D4B800;
+}
+
 QHeaderView::section {
     background-color: #F2C438;
     color: #4B1A05;
