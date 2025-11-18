@@ -1,158 +1,160 @@
-from PyQt6.QtWidgets import QTableWidgetItem, QMessageBox
-from models.inventory_model import InventoryModel
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QInputDialog, QMessageBox, QTableWidgetItem
+from datetime import datetime
 from models.sales_model import SalesModel
+from models.inventory_model import InventoryModel
 
 
 class NewSalesController:
     def __init__(self, view, user: dict):
         self.view = view
+        self.sales_model = SalesModel()
+        self.inventory_model = InventoryModel()
         self.user = user
-        self.products = None
-
-        self.inventory = InventoryModel()
-        self.sales = SalesModel()
 
         self.connect_signals()
-        self.load_initial_data()
-
-    def load_initial_data(self):
-        self.load_clients()
-        self.load_products()
-        self.view.txt_total.setText("0.00")
-        self.view.txt_change.setText("0.00")
-
-    def load_clients(self):
-        clients = [
-            {"name": "Consumidor Final", "nit": "C/F", "phone": "", "address": ""},
-            {"name": "Miguel Castillo", "nit": "12345678321", "phone": "78985623", "address": "Calle 18 AV"}
-        ]
-
-        self.view.cmb_client.clear()
-
-        for c in clients:
-            self.view.cmb_client.addItem(c["name"], c)
-
-        self.view.cmb_client.currentIndexChanged.connect(self.update_client_info)
-
-    def update_client_info(self):
-        client = self.view.cmb_client.currentData()
-        if client:
-            self.view.txt_nit.setText(client.get("nit", ""))
-            self.view.txt_phone.setText(client.get("phone", ""))
-            self.view.txt_address.setText(client.get("address", ""))
-
-    def load_products(self):
-        self.products = self.inventory.get_all()
-
-    def add_product(self):
-        if not self.products:
-            return
-
-        p = self.products[0]  # cambiar a un selector real.
-
-        row = self.view.tbl_products.rowCount()
-        self.view.tbl_products.insertRow(row)
-
-        self.view.tbl_products.setItem(row, 0, QTableWidgetItem(p["name"]))
-        self.view.tbl_products.setItem(row, 1, QTableWidgetItem(p["attributes"].get("color", "")))
-        self.view.tbl_products.setItem(row, 2, QTableWidgetItem("1"))
-        self.view.tbl_products.setItem(row, 3, QTableWidgetItem(f"{p['price']:.2f}"))
-
-        subtotal = p["price"] * 1
-        self.view.tbl_products.setItem(row, 4, QTableWidgetItem(f"{subtotal:.2f}"))
-
-        self.update_totals()
-
-    def delete_product(self):
-        row = self.view.tbl_products.currentRow()
-        if row >= 0:
-            self.view.tbl_products.removeRow(row)
-            self.update_totals()
-
-    def clear_products(self):
-        self.view.tbl_products.setRowCount(0)
-        self.update_totals()
-
-    def update_totals(self):
-        total = 0
-        for row in range(self.view.tbl_products.rowCount()):
-            subtotal = float(self.view.tbl_products.item(row, 4).text())
-            total += subtotal
-
-        self.view.txt_total.setText(f"{total:.2f}")
-
-        payment_text = self.view.txt_payment.text()
-        if payment_text:
-            self.update_change()
-
-    def update_change(self):
-        try:
-            payment = float(self.view.txt_payment.text())
-            total = float(self.view.txt_total.text())
-            change = payment - total
-            self.view.txt_change.setText(f"{change:.2f}")
-        except ValueError:
-            self.view.txt_change.setText("0.00")
-
-    def save_sale(self):
-        # Validación
-        if self.view.tbl_products.rowCount() == 0:
-            QMessageBox.warning(None, "Error", "Debe agregar al menos un producto.")
-            return
-
-        client = self.view.cmb_client.currentData()
-
-        if not client:
-            QMessageBox.warning(None, "Error", "Debe seleccionar un cliente.")
-            return
-
-        # Construir detalles
-        details = []
-        for row in range(self.view.tbl_products.rowCount()):
-            details.append({
-                "product": self.view.tbl_products.item(row, 0).text(),
-                "color": self.view.tbl_products.item(row, 1).text(),
-                "quantity": int(self.view.tbl_products.item(row, 2).text()),
-                "unit_price": float(self.view.tbl_products.item(row, 3).text()),
-                "subtotal": float(self.view.tbl_products.item(row, 4).text())
-            })
-
-        # Pago
-        payment = {
-            "given": float(self.view.txt_payment.text()),
-            "change": float(self.view.txt_change.text())
-        }
-
-        total = float(self.view.txt_total.text())
-
-        # inserción
-        sale_id = self.sales.create_sale(
-            user=self.user,
-            client=client,
-            total=total,
-            payment=payment,
-            details=details
-        )
-
-        QMessageBox.information(None, "Venta registrada", f"Venta guardada con ID:\n{sale_id}")
-
-        # Limpiar vista
-        self.clear_products()
-        self.view.txt_payment.setText("")
-        self.view.txt_change.setText("0.00")
-
-    def cancel_sale(self):
-        self.clear_products()
-        self.view.txt_payment.setText("")
-        self.view.txt_change.setText("0.00")
-        QMessageBox.information(None, "Cancelado", "Venta cancelada.")
 
     def connect_signals(self):
         self.view.btn_add.clicked.connect(self.add_product)
-        self.view.btn_delete.clicked.connect(self.delete_product)
-        self.view.btn_clear.clicked.connect(self.clear_products)
+        self.view.btn_delete.clicked.connect(self.delete_selected)
+        self.view.btn_clear.clicked.connect(self.clear_table)
+        self.view.btn_save.clicked.connect(self.save_sale)
+        self.view.btn_cancel.clicked.connect(self.cancel_sale)
 
         self.view.txt_payment.textChanged.connect(self.update_change)
 
-        self.view.btn_save.clicked.connect(self.save_sale)
-        self.view.btn_cancel.clicked.connect(self.cancel_sale)
+    def add_product(self):
+        code, ok = QInputDialog.getText(self.view, "Código", "Ingrese el código del producto:")
+        if not ok or not code.strip():
+            return
+
+        product = self.inventory_model.get_by_code(code.strip())
+        if not product:
+            self.show("Producto no encontrado.")
+            return
+
+        amount, ok = QInputDialog.getInt(self.view, "Cantidad", "Cantidad:", 1, 1, 9999)
+        if not ok:
+            return
+
+        name = product["name"]
+        price = float(product["price"])
+        subtotal = price * amount
+
+        row = self.view.tbl_products.rowCount()
+        self.view.tbl_products.insertRow(row)
+        self.view.tbl_products.setItem(row, 0, self.new_item(name))
+
+        color = product["attributes"].get("color", "-")
+        self.view.tbl_products.setItem(row, 1, self.new_item(color))
+
+        self.view.tbl_products.setItem(row, 2, self.new_item(str(amount)))
+        self.view.tbl_products.setItem(row, 3, self.new_item(f"{price:.2f}"))
+        self.view.tbl_products.setItem(row, 4, self.new_item(f"{subtotal:.2f}"))
+
+        self.update_total()
+
+    def delete_selected(self):
+        row = self.view.tbl_products.currentRow()
+        if row < 0:
+            self.show("Seleccione un producto.")
+            return
+
+        self.view.tbl_products.removeRow(row)
+        self.update_total()
+
+    def clear_table(self):
+        self.view.tbl_products.setRowCount(0)
+        self.update_total()
+
+    def update_total(self):
+        total = 0
+        rows = self.view.tbl_products.rowCount()
+
+        for i in range(rows):
+            subtotal = float(self.view.tbl_products.item(i, 4).text())
+            total += subtotal
+
+        self.view.txt_total.setText(f"{total:.2f}")
+        self.update_change()
+
+    def update_change(self):
+        try:
+            total = float(self.view.txt_total.text())
+            given = float(self.view.txt_payment.text())
+            change = given - total
+            if change < 0:
+                change = 0
+            self.view.txt_change.setText(f"{change:.2f}")
+        except:
+            self.view.txt_change.setText("0.00")
+
+    def save_sale(self):
+        client = {
+            "name": self.view.txt_client_name.text().strip(),
+            "nit": self.view.txt_nit.text().strip(),
+            "phone": self.view.txt_phone.text().strip(),
+            "address": self.view.txt_address.text().strip()
+        }
+
+        if not client["name"]:
+            self.show("Ingrese el nombre del cliente.")
+            return
+
+        details = []
+        rows = self.view.tbl_products.rowCount()
+
+        if rows == 0:
+            self.show("Debe agregar al menos un producto.")
+            return
+
+        for i in range(rows):
+            details.append({
+                "product": self.view.tbl_products.item(i, 0).text(),
+                "color": self.view.tbl_products.item(i, 1).text(),
+                "quantity": int(self.view.tbl_products.item(i, 2).text()),
+                "unit_price": float(self.view.tbl_products.item(i, 3).text()),
+                "subtotal": float(self.view.tbl_products.item(i, 4).text())
+            })
+
+        sale_total = float(self.view.txt_total.text())
+        payment_given = float(self.view.txt_payment.text() or 0)
+        payment_change = float(self.view.txt_change.text())
+
+        payment = {
+            "given": payment_given,
+            "change": payment_change
+        }
+
+        self.sales_model.create_sale(
+            user=self.user,
+            client=client,
+            total=sale_total,
+            payment=payment,
+            details=details,
+            date=datetime.utcnow().isoformat()
+        )
+
+        self.show("Venta realizada con éxito.")
+        self.clear_all()
+
+    def cancel_sale(self):
+        self.clear_all()
+
+    def clear_all(self):
+        self.view.txt_client_name.clear()
+        self.view.txt_nit.clear()
+        self.view.txt_phone.clear()
+        self.view.txt_address.clear()
+        self.view.txt_payment.clear()
+        self.view.txt_total.setText("0.00")
+        self.view.txt_change.setText("0.00")
+        self.clear_table()
+
+    def show(self, text):
+        QMessageBox.information(self.view, "Info", text)
+
+    def new_item(self, text):
+        item = QTableWidgetItem(str(text))
+        item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+        return item

@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 class NewSaleWidget(QWidget):
     def __init__(self):
         super().__init__()
-        self.cmb_client = None
+        self.txt_client_name = None
         self.txt_nit = None
         self.txt_phone = None
         self.txt_address = None
@@ -16,8 +16,6 @@ class NewSaleWidget(QWidget):
         self.txt_total = None
         self.txt_payment = None
         self.txt_change = None
-
-        self.btn_add_client = None
 
         self.btn_add = None
         self.btn_delete = None
@@ -40,23 +38,12 @@ class NewSaleWidget(QWidget):
     def setup_client_section(self):
         box = QGroupBox("Información del Cliente")
 
-        self.cmb_client = QComboBox()
-        self.cmb_client.setPlaceholderText("Seleccionar cliente...")
-
-        self.btn_add_client = QToolButton()
-        self.btn_add_client.setText("+")
-        self.btn_add_client.setFixedSize(38, 38)
+        self.txt_client_name = QLineEdit()
+        self.txt_client_name.setPlaceholderText("Nombre del cliente")
 
         self.txt_nit = QLineEdit()
         self.txt_phone = QLineEdit()
         self.txt_address = QLineEdit()
-
-        for field in (self.txt_nit, self.txt_phone, self.txt_address):
-            field.setReadOnly(True)
-
-        row_client = QHBoxLayout()
-        row_client.addWidget(self.cmb_client)
-        row_client.addWidget(self.btn_add_client)
 
         row1 = QHBoxLayout()
         row1.addWidget(QLabel("NIT:"))
@@ -68,7 +55,7 @@ class NewSaleWidget(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Cliente:"))
-        layout.addLayout(row_client)
+        layout.addWidget(self.txt_client_name)
         layout.addSpacing(8)
         layout.addLayout(row1)
 
