@@ -21,9 +21,9 @@ class SalesHistoryWidget(QWidget):
         main_layout.addWidget(title)
 
         self.tbl_sales = QTableWidget()
-        self.tbl_sales.setColumnCount(6)
+        self.tbl_sales.setColumnCount(7)
         self.tbl_sales.setHorizontalHeaderLabels(
-            ["ID Venta", "Cliente", "Fecha", "Total", "Pago", "Cambio"]
+            ["id", "Usuario", "Cliente", "Fecha", "Total", "Pago", "Cambio"]
         )
         self.tbl_sales.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tbl_sales.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)

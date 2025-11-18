@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
 
         self.stock_history = QAction("Ver movimientos", self)
         self.stock_history.setStatusTip("Visualizar ingresos y egresos de producto")
-        inventory_menu.addAction(self.stock_history)
+        # inventory_menu.addAction(self.stock_history)
 
         self.product_management = QAction("Gestion de productos", self)
         self.product_management.setStatusTip("Agregar o eliminar un producto")

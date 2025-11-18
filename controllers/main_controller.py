@@ -9,6 +9,7 @@ from views.pages.inventory.product_management_widget import ProductManagement
 
 # controllers
 from controllers.sales.new_sale_controller import NewSalesController
+from controllers.sales.sales_history_controller import SalesHistoryController
 from controllers.inventory.inventory_controller import InventoryController
 
 
@@ -24,6 +25,7 @@ class MainController:
         self.product_management_widget = ProductManagement()
 
         self.new_sale_controller = NewSalesController(self.new_sale_widget, user)
+        self.sales_history_controller = SalesHistoryController(self.sales_history_widget)
         self.inventory_controller = InventoryController(self.inventory_widget)
 
         self.view.add_widget(self.home_widget)

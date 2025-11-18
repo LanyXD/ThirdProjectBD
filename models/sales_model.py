@@ -65,5 +65,5 @@ class SalesModel:
         )
 
     def delete_sale(self, sale_id: str):
-        return self.collection.delete_one({"_id": ObjectId(sale_id)})
-
+        result = self.collection.delete_one({"_id": ObjectId(sale_id)})
+        return result.deleted_count > 0
