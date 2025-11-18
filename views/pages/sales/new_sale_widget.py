@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QHBoxLayout, QComboBox,
     QTableWidget, QLineEdit, QPushButton, QGroupBox, QFormLayout,
-    QHeaderView, QSizePolicy, QToolButton
+    QHeaderView, QSizePolicy, QToolButton, QAbstractItemView
 )
 
 
@@ -75,6 +75,9 @@ class NewSaleWidget(QWidget):
         header = self.tbl_products.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
+        self.tbl_products.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tbl_products.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.tbl_products.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.tbl_products.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )

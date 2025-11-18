@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem,
-    QHBoxLayout, QPushButton, QHeaderView, QLabel, QSizePolicy
+    QHBoxLayout, QPushButton, QHeaderView, QLabel, QSizePolicy, QAbstractItemView
 )
 
 
@@ -27,6 +27,9 @@ class SalesHistoryWidget(QWidget):
         )
         self.tbl_sales.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.tbl_sales.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.tbl_sales.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tbl_sales.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.tbl_sales.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         main_layout.addWidget(self.tbl_sales)
 
         main_layout.addLayout(self.setup_buttons())
