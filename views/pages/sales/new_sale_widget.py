@@ -68,9 +68,9 @@ class NewSaleWidget(QWidget):
 
         # Tabla
         self.tbl_products = QTableWidget()
-        self.tbl_products.setColumnCount(5)
+        self.tbl_products.setColumnCount(6)
         self.tbl_products.setHorizontalHeaderLabels(
-            ["Producto", "Color", "Cantidad", "Precio Unitario", "Subtotal"]
+            ["Código", "Producto", "Color", "Cantidad", "Precio Unitario", "Subtotal"]
         )
         header = self.tbl_products.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)

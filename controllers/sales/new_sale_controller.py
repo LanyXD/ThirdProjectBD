@@ -43,14 +43,15 @@ class NewSalesController:
 
         row = self.view.tbl_products.rowCount()
         self.view.tbl_products.insertRow(row)
-        self.view.tbl_products.setItem(row, 0, self.new_item(name))
+        self.view.tbl_products.setItem(row, 0, self.new_item(code))
+        self.view.tbl_products.setItem(row, 1, self.new_item(name))
 
         color = product["attributes"].get("color", "-")
-        self.view.tbl_products.setItem(row, 1, self.new_item(color))
+        self.view.tbl_products.setItem(row, 2, self.new_item(color))
 
-        self.view.tbl_products.setItem(row, 2, self.new_item(str(amount)))
-        self.view.tbl_products.setItem(row, 3, self.new_item(f"{price:.2f}"))
-        self.view.tbl_products.setItem(row, 4, self.new_item(f"{subtotal:.2f}"))
+        self.view.tbl_products.setItem(row, 3, self.new_item(str(amount)))
+        self.view.tbl_products.setItem(row, 4, self.new_item(f"{price:.2f}"))
+        self.view.tbl_products.setItem(row, 5, self.new_item(f"{subtotal:.2f}"))
 
         self.update_total()
 
@@ -72,7 +73,7 @@ class NewSalesController:
         rows = self.view.tbl_products.rowCount()
 
         for i in range(rows):
-            subtotal = float(self.view.tbl_products.item(i, 4).text())
+            subtotal = float(self.view.tbl_products.item(i, 5).text())
             total += subtotal
 
         self.view.txt_total.setText(f"{total:.2f}")
@@ -110,16 +111,32 @@ class NewSalesController:
 
         for i in range(rows):
             details.append({
-                "product": self.view.tbl_products.item(i, 0).text(),
-                "color": self.view.tbl_products.item(i, 1).text(),
-                "quantity": int(self.view.tbl_products.item(i, 2).text()),
-                "unit_price": float(self.view.tbl_products.item(i, 3).text()),
-                "subtotal": float(self.view.tbl_products.item(i, 4).text())
+                "code": self.view.tbl_products.item(i, 0).text(),
+                "product": self.view.tbl_products.item(i, 1).text(),
+                "color": self.view.tbl_products.item(i, 2).text(),
+                "quantity": int(self.view.tbl_products.item(i, 3).text()),
+                "unit_price": float(self.view.tbl_products.item(i, 4).text()),
+                "subtotal": float(self.view.tbl_products.item(i, 5).text())
             })
 
-        sale_total = float(self.view.txt_total.text())
-        payment_given = float(self.view.txt_payment.text() or 0)
-        payment_change = float(self.view.txt_change.text())
+        try:
+            sale_total = float(self.view.txt_total.text())
+        except ValueError:
+            self.show("El total no es válido.")
+            return
+
+        try:
+            payment_given = float(self.view.txt_payment.text() or 0)
+        except ValueError:
+            self.show("El monto ingresado no es válido.")
+            return
+
+        if payment_given < sale_total:
+            self.show("El pago debe ser mayor o igual al total de la venta.")
+            return
+
+        payment_change = payment_given - sale_total
+        self.view.txt_change.setText(f"{payment_change:.2f}")
 
         payment = {
             "given": payment_given,
@@ -134,6 +151,15 @@ class NewSalesController:
             details=details,
             date=datetime.utcnow().isoformat()
         )
+
+        for item in details:
+            code = item.get("code")
+            quantity_sold = item["quantity"]
+
+            product = self.inventory_model.get_by_code(code)
+            if product:
+                new_stock = max(product.get("stock", 0) - quantity_sold, 0)
+                self.inventory_model.update_item(str(product["_id"]), {"stock": new_stock})
 
         self.show("Venta realizada con éxito.")
         self.clear_all()
