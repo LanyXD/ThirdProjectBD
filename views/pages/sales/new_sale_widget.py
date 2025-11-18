@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QHBoxLayout, QComboBox,
     QTableWidget, QLineEdit, QPushButton, QGroupBox, QFormLayout,
-    QHeaderView, QSizePolicy
+    QHeaderView, QSizePolicy, QToolButton
 )
 
 
@@ -16,6 +16,8 @@ class NewSaleWidget(QWidget):
         self.txt_total = None
         self.txt_payment = None
         self.txt_change = None
+
+        self.btn_add_client = None
 
         self.btn_add = None
         self.btn_delete = None
@@ -37,8 +39,13 @@ class NewSaleWidget(QWidget):
 
     def setup_client_section(self):
         box = QGroupBox("Información del Cliente")
+
         self.cmb_client = QComboBox()
         self.cmb_client.setPlaceholderText("Seleccionar cliente...")
+
+        self.btn_add_client = QToolButton()
+        self.btn_add_client.setText("+")
+        self.btn_add_client.setFixedSize(38, 38)
 
         self.txt_nit = QLineEdit()
         self.txt_phone = QLineEdit()
@@ -46,6 +53,10 @@ class NewSaleWidget(QWidget):
 
         for field in (self.txt_nit, self.txt_phone, self.txt_address):
             field.setReadOnly(True)
+
+        row_client = QHBoxLayout()
+        row_client.addWidget(self.cmb_client)
+        row_client.addWidget(self.btn_add_client)
 
         row1 = QHBoxLayout()
         row1.addWidget(QLabel("NIT:"))
@@ -57,7 +68,7 @@ class NewSaleWidget(QWidget):
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Cliente:"))
-        layout.addWidget(self.cmb_client)
+        layout.addLayout(row_client)
         layout.addSpacing(8)
         layout.addLayout(row1)
 
@@ -72,10 +83,11 @@ class NewSaleWidget(QWidget):
         self.tbl_products = QTableWidget()
         self.tbl_products.setColumnCount(5)
         self.tbl_products.setHorizontalHeaderLabels(
-            ["Producto", "Unidad", "Cantidad", "Precio Unitario", "Subtotal"]
+            ["Producto", "Color", "Cantidad", "Precio Unitario", "Subtotal"]
         )
         header = self.tbl_products.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+
         self.tbl_products.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
@@ -133,16 +145,15 @@ class NewSaleWidget(QWidget):
         btn_layout = QHBoxLayout()
         self.btn_cancel = QPushButton("❌ Cancelar Venta")
         self.btn_cancel.setFixedHeight(40)
-        self.btn_cancel.setStyleSheet("font-size: 14px; "
-                                      "font-weight: bold;")
+        self.btn_cancel.setStyleSheet("font-size: 14px; font-weight: bold;")
 
         self.btn_save = QPushButton("💾 Realizar Venta")
         self.btn_save.setFixedHeight(40)
-        self.btn_save.setStyleSheet("font-size: 14px; "
-                                    "font-weight: bold;")
+        self.btn_save.setStyleSheet("font-size: 14px; font-weight: bold;")
 
         btn_layout.addStretch()
         btn_layout.addWidget(self.btn_cancel)
         btn_layout.addWidget(self.btn_save)
         btn_layout.addStretch()
+
         return btn_layout

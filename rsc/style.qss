@@ -264,3 +264,29 @@ QGroupBox::title {
     margin-left: 8px;
     font-weight: bold;
 }
+
+/* -----------------------
+   QToolButton
+------------------------ */
+QToolButton {
+    background-color: #F2C438;
+    border: 2px solid #E6A300;
+    border-radius: 4px;
+    padding: 2px;
+    min-width: 20px;
+    min-height: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #4B1A05;
+}
+
+QToolButton:hover {
+    background-color: #F28705;
+    border: 2px solid #F2C438;
+}
+
+QToolButton:pressed {
+    background-color: #D49C00;
+    border: 2px solid #4B1A05;
+}
+

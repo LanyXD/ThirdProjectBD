@@ -13,7 +13,7 @@ from controllers.inventory.inventory_controller import InventoryController
 
 
 class MainController:
-    def __init__(self):
+    def __init__(self, user: dict):
         self.view = MainWindow()
 
         self.home_widget = HomeWidget()
@@ -23,7 +23,7 @@ class MainController:
         self.stock_history_widget = StockHistoryWidget()
         self.product_management_widget = ProductManagement()
 
-        self.new_sale_controller = NewSalesController(self.new_sale_widget)
+        self.new_sale_controller = NewSalesController(self.new_sale_widget, user)
         self.inventory_controller = InventoryController(self.inventory_widget)
 
         self.view.add_widget(self.home_widget)
