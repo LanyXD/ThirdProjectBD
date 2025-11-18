@@ -5,12 +5,13 @@ from views.pages.sales.new_sale_widget import NewSaleWidget
 from views.pages.sales.sales_history_widget import SalesHistoryWidget
 from views.pages.inventory.inventory_widget import InventoryWidget
 from views.pages.inventory.stock_history_widget import StockHistoryWidget
-from views.pages.inventory.product_management_widget import ProductManagement
+from views.pages.inventory.product_management_widget import ProductManagementWidget
 
 # controllers
 from controllers.sales.new_sale_controller import NewSalesController
 from controllers.sales.sales_history_controller import SalesHistoryController
 from controllers.inventory.inventory_controller import InventoryController
+from controllers.inventory.product_controller import ProductController
 
 
 class MainController:
@@ -22,11 +23,12 @@ class MainController:
         self.sales_history_widget = SalesHistoryWidget()
         self.inventory_widget = InventoryWidget()
         self.stock_history_widget = StockHistoryWidget()
-        self.product_management_widget = ProductManagement()
+        self.product_management_widget = ProductManagementWidget()
 
         self.new_sale_controller = NewSalesController(self.new_sale_widget, user)
         self.sales_history_controller = SalesHistoryController(self.sales_history_widget)
         self.inventory_controller = InventoryController(self.inventory_widget)
+        self.product_controller = ProductController(self.product_management_widget)
 
         self.view.add_widget(self.home_widget)
         self.view.add_widget(self.new_sale_widget)
